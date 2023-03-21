@@ -44,11 +44,13 @@ public class taskTwo {
         final Printer c = new Printer();
         Thread t1 = new Thread() {
             public void run() {
+                System.out.println(Thread.currentThread().getName() + " initiating...");
                 c.printchar(5);
             }
         };
         Thread t2 = new Thread() {
             public void run() {
+                System.out.println(Thread.currentThread().getName() + " initiating...");
                 c.printnum(10);
             }
         };
