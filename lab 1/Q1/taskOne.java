@@ -1,4 +1,5 @@
 package Q1;
+
 class PrintChar implements Runnable {
     private char ch;
     private int count;
@@ -24,23 +25,31 @@ class PrintChar implements Runnable {
 
 class PrintNum extends Thread {
     private int max;
+    private int delay;
 
-    public PrintNum(int max) {
+    public PrintNum(int max, int delay) {
         this.max = max;
+        this.delay = delay;
     }
 
     public void run() {
         for (int i = 1; i <= max; i++) {
             System.out.print(i + " ");
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
 
 public class taskOne {
     public static void main(String[] args) {
-        Thread thread1 = new Thread(new PrintChar('C', 25, 100));
-        Thread thread2 = new Thread(new PrintChar('G', 15, 500));
-        PrintNum thread3 = new PrintNum(67);
+        Thread thread1 = new Thread(new PrintChar('A', 15, 500));
+        Thread thread2 = new Thread(new PrintChar('B', 15, 500));
+
+        PrintNum thread3 = new PrintNum(67, 500);
 
         thread1.start();
         thread2.start();
