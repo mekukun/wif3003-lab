@@ -1,3 +1,4 @@
+package Q1;
 class PrintChar implements Runnable {
     private char ch;
     private int count;
