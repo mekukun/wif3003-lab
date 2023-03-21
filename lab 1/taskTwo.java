@@ -1,68 +1,57 @@
-class PrintCharTwo implements Runnable {
-    private char c;
-    private int count;
-    private Object lock;
+class Printer {
+    boolean flag = false;
+    int turn = 1;
 
-    public PrintCharTwo(char c, int count, Object lock) {
-        this.c = c;
-        this.count = count;
-        this.lock = lock;
-    }
-
-    public void run() {
-        for (int i = 0; i < count; i++) {
-            synchronized (lock) {
-                System.out.print(c);
-                lock.notify();
+    public synchronized void printnum(int limit) {
+        for (int i = 1; i <= limit; i++) {
+            while (turn != 2) {
                 try {
-                    if (c == 'A') {
-                        lock.wait();
-                    } else {
-                        Thread.sleep(100);
-                    }
+                    wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+            System.out.print(i + " ");
+
+            if (!flag) {
+                turn = 1;
+                notifyAll();
             }
         }
     }
-}
 
-class PrintNumTwo implements Runnable {
-    private int count;
-    private Object lock;
-
-    public PrintNumTwo(int count, Object lock) {
-        this.count = count;
-        this.lock = lock;
-    }
-
-    public void run() {
-        synchronized (lock) {
-            for (int i = 1; i <= count; i++) {
-                System.out.print(i + " ");
-                lock.notify();
+    public synchronized void printchar(int limit) {
+        for (int i = 0; i < limit; i++) {
+            while (turn != 1) {
                 try {
-                    if (i == 10) {
-                        lock.wait();
-                    } else {
-                        Thread.sleep(100);
-                        lock.wait();
-                    }
+                    wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            lock.notifyAll();
+            System.out.print("A ");
+            turn = 2;
+            if (i == limit - 1) {
+                flag = true;
+            }
+            notifyAll();
         }
     }
 }
 
 public class taskTwo {
     public static void main(String[] args) {
-        Object lock = new Object();
-        Thread t1 = new Thread(new PrintCharTwo('A', 10, lock));
-        Thread t2 = new Thread(new PrintNumTwo(20, lock));
+        final Printer c = new Printer();
+        Thread t1 = new Thread() {
+            public void run() {
+                c.printchar(5);
+            }
+        };
+        Thread t2 = new Thread() {
+            public void run() {
+                c.printnum(10);
+            }
+        };
         t1.start();
         t2.start();
     }
