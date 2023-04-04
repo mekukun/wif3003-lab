@@ -2,15 +2,16 @@ package Q1A;
 
 public class Room {
     private int numGuests = 0;
-    private boolean isCleanerPresent = false;
+    private int numCleaner = 0;
 
     public synchronized void enterAsGuest() throws InterruptedException {
-        while (isCleanerPresent || numGuests >= 6) {
+        while (numCleaner != 0 || numGuests >= 6) {
             wait();
         }
         numGuests++;
         System.out.println("\nGuest " + Thread.currentThread().getName() + " entered the room.");
         System.out.println("Number of guests: " + numGuests);
+        System.out.println("Number of cleaner: " + numCleaner);
     }
 
     public synchronized void exitAsGuest() {
@@ -21,21 +22,24 @@ public class Room {
         // }
         System.out.println("\nGuest " + Thread.currentThread().getName() + " left the room.");
         System.out.println("Number of guests: " + numGuests);
+        System.out.println("Number of cleaner: " + numCleaner);
     }
 
     public synchronized void enterAsCleaner() throws InterruptedException {
-        while (numGuests > 0) {
+        while (numGuests > 0 || numCleaner != 0) {
             wait();
         }
-        isCleanerPresent = true;
+        numCleaner++;
         System.out.println("\nCleaner " + Thread.currentThread().getName() + " entered the room.");
         System.out.println("Number of guests: " + numGuests);
+        System.out.println("Number of cleaner: " + numCleaner);
     }
 
     public synchronized void exitAsCleaner() {
-        isCleanerPresent = false;
+        numCleaner--;
         notifyAll();
         System.out.println("\nCleaner " + Thread.currentThread().getName() + " left the room.");
         System.out.println("Number of guests: " + numGuests);
+        System.out.println("Number of cleaner: " + numCleaner);
     }
 }
