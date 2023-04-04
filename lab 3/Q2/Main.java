@@ -13,14 +13,17 @@ public class Main {
 
             int amount = rand.nextInt(100);
 
-            Thread user = new Thread(() -> {
-                if (rand.nextInt(2) == 0) {
+            if (rand.nextInt(2) == 0) {
+                Thread user = new Thread(() -> {
                     bank.withdraw(amount);
-                } else {
+                });
+                user.start();
+            } else {
+                Thread user = new Thread(() -> {
                     bank.deposit(amount);
-                }
-            });
-            user.start();
+                });
+                user.start();
+            }
         }
     }
 }
