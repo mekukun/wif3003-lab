@@ -18,7 +18,7 @@ public class Q2 {
 
         System.out.println("All the elements:");
         evaluate(numbers, num -> true);
-
+        
         System.out.println("All the odd elements:");
         evaluate(numbers, num -> num % 2 != 0);
 

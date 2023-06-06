@@ -1,0 +1,7 @@
+The reason for Java including the wait(), notify(), and notifyAll() methods in the Object class is to provide a mechanism for inter-thread communication and coordination.
+
+wait(): The wait() method is used to make a thread wait until another thread notifies it. When a thread calls wait() on an object, it releases the lock on that object and enters a waiting state. It waits until another thread calls notify() or notifyAll() on the same object to wake it up. This mechanism allows threads to synchronize and coordinate their activities.
+
+notify(): The notify() method is used to wake up a single thread that is waiting on the same object. When a thread calls notify(), it notifies one of the waiting threads to wake up. However, it's not guaranteed which thread will be awakened. The awakened thread then competes for the lock on the object.
+
+notifyAll(): The notifyAll() method is used to wake up all the threads that are waiting on the same object. When a thread calls notifyAll(), all the waiting threads are notified and moved to the ready state. They will compete for the lock on the object to resume their execution.
